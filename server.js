@@ -3,9 +3,9 @@
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: Astrid Salazar Student ID: 159580182 Date: ________________
+*  Name: Astrid Salazar Student ID: 159580182 Date: September 30th, 2022
 *
-*  Online (Cyclic) Link: ________________________________________________________
+*  Online (Cyclic) Link: https://dull-lime-sea-lion-kilt.cyclic.app
 *
 ********************************************************************************/ 
 
@@ -24,7 +24,6 @@ app.use(express.static('public'));
 
 app.get("/", function(req,res){
   res.redirect('/about');
-  //res.sendFile(path.join(__dirname, "/views/home.html"));
 });
 
 app.get("/about", function(req, res){
