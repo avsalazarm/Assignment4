@@ -55,49 +55,40 @@ module.exports.getPublishedPosts = function() {
     });
 }
 
-module.exports.getPostsbyCategories = function(category){
-    return new Promise(function(resolve,reject){
-        var foundCategory = null;
-        for(let i = 0; i < posts.length && !foundCategory; i++){
-            if(posts[i].category==category){
-                foundCategory = posts[i];
-            }
+module.exports.getPostsbyCategory = function(category){
+    return new Promise((resolve,reject)=>{
+        let filteredPosts = posts.filter(post=>post.category == category);
+
+        if(filteredPosts.length == 0){
+            reject("no results returned")
+        }else{
+            resolve(filteredPosts);
         }
-        if(!foundCategory){
-            reject("Category does not exist - No data to be shown");
-        }
-        resolve(foundCategory);
-    })
+    });
 }
 
 module.exports.getPostsByMinDate = function(minDateStr){
-    return new Promise(function(resolve,reject){
-        var foundDate = null;
-        for(let i = 0; i < posts.length && !foundDate; i++){
-            if(newDate(posts[i].postDate) >= newDate(minDateStr)){
-                foundDate = posts[i];
-            }
+    return new Promise((resolve, reject) => {
+        let filteredPosts = posts.filter(post => (new Date(post.postDate)) >= (new Date(minDateStr)))
+
+        if (filteredPosts.length == 0) {
+            reject("no results returned")
+        } else {
+            resolve(filteredPosts);
         }
-        if(!foundDate){
-            reject("Date does not exist - No data to be shown");
-        }
-        resolve(foundDate);
-    })
+    });
 }
 
 module.exports.getPostsbyId = function(id){
-    return new Promise(function(resolve,reject){
-        var foundPost = null;
-        for(let i = 0; i < posts.length && !foundPost; i++){
-            if(posts[i].id==id){
-                foundPost = posts[i];
-            }
+    return new Promise((resolve,reject)=>{
+        let foundPost = posts.find(post => post.id == id);
+
+        if(foundPost){
+            resolve(foundPost);
+        }else{
+            reject("no result returned");
         }
-        if(!foundPost){
-            reject("ID does not exist - No data to be shown");
-        }
-        resolve(foundPost);
-    })
+    });
 }
 
 module.exports.getCategories = function() {
@@ -115,6 +106,44 @@ module.exports.addPost = function(postData){
         postData.id = posts.length + 1; //automatic creation of an id
         postData.published = (postData.published)? true: false; //if the box is checked it's set to true
         posts.push(postData); //will add the new post to the array
+        date = new Date();
+        postsData.postDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        postsData.push(post);
+
         resolve();
     });
 };
+
+module.exports.getPublishedPostsByCategory = function() {
+    return new Promise((resolve, reject)=>{
+        var filteredPosts = [];
+        for(let i = 0; i < posts.length; i++){
+            if(posts[i].published == true){
+                filteredPosts.push(posts[i]);
+            }
+        }
+
+        if(filteredPosts == 0){
+            reject("No published posts found");
+        }else{
+            resolve(filteredPosts);
+        }
+    });
+}
+
+module.exports.getPublishedPosts = function(category) {
+    return new Promise((resolve, reject)=>{
+        var filteredPosts = [];
+        for(let i = 0; i < posts.length; i++){
+            if(posts[i].published == true && post.category == category){
+                filteredPosts.push(posts[i]);
+            }
+        }
+
+        if(filteredPosts == 0){
+            reject("No published posts found");
+        }else{
+            resolve(filteredPosts);
+        }
+    });
+}
